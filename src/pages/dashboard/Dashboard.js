@@ -1,5 +1,6 @@
 import React from 'react'
 import SideNav from '../dashboard/siadenav/sidenav'
+import {NavLink} from 'reactstrap';
 
 function Dashboard() {
   return (
@@ -13,6 +14,12 @@ function Dashboard() {
                     <h5 className="card-title text-white bg-primary text-center border p-3">
                       Dashboard
                     </h5>
+
+                    <NavLink  href="/login">
+              <button className='btn btn-primary'>
+                Logout
+              </button>
+            </NavLink>
                    
                   
                   </div>
