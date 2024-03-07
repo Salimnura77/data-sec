@@ -84,7 +84,10 @@ export default function LoginFinal() {
                         Log in
                       </Button>
                       <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-                        Don't have an account? <NavLink href='/sign-up'>Sign up</NavLink>
+                        Don't have an account?     <NavLink href='/sign-up' style={{ textDecoration: 'underline' }}>
+      Sign up
+    </NavLink>
+
                       </p>
                     </div>
                   </Form>

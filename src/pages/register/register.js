@@ -143,7 +143,7 @@ export default function Register() {
                             Register
                           </Button>
                           <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-                            Already have an account? <NavLink href="/login">Log in</NavLink>
+                            Already have an account? <NavLink style={{ textDecoration: 'underline' }} href="/login">Log in</NavLink>
                           </p>
                         </div>
                       </Form>

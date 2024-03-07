@@ -1,5 +1,5 @@
 import React from 'react'
-import SideNav from '../dashboard/siadenav/sidenav'
+// import SideNav from '../dashboard/siadenav/sidenav'
 import {NavLink} from 'reactstrap';
 
 function Dashboard() {
