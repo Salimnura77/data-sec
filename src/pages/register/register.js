@@ -22,7 +22,7 @@ export default function Register() {
   };
 
   useEffect(() => {
-    // Simulate loading for 2 seconds
+    
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
