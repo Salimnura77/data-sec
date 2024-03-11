@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../dashboard/siadenav/sidenav';
 
 function getTitleFromPath(path) {
@@ -17,11 +16,18 @@ function getTitleFromPath(path) {
 function Dashboard() {
   const [pageTitle, setPageTitle] = useState('Dashboard');
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const currentTitle = getTitleFromPath(location.pathname);
     setPageTitle(currentTitle);
   }, [location]);
+
+  // Use useEffect with an empty dependency array to run once when the component mounts
+  useEffect(() => {
+    // Set the default route to '/dashboard/bar' when entering the dashboard
+    navigate('/dashboard/bar');
+  }, []); // Empty dependency array
 
   return (
     <DashboardLayout>
