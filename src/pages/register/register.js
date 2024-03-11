@@ -39,12 +39,26 @@ export default function Register() {
   };
 
   const handleRegister = () => {
-    // Simulate successful registration
-    // You can replace this with your actual registration logic
-    // If registration is successful, setRegistrationSuccess(true)
+    // Validation checks
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.confirmPassword) {
+    alert('All fields are required.');
+      return;
+    }
 
+    if (formData.password !== formData.confirmPassword) {
+    alert('Passwords do not match.');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+    alert('Password should be at least six characters long.');
+      return;
+    }
+
+   
     setRegistrationSuccess(true);
   };
+
 
   return (
     <div className='register'>

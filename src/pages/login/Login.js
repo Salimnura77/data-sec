@@ -17,10 +17,27 @@ export default function LoginFinal() {
     setPasswordVisible(!passwordVisible);
   };
 
+  // ...
+
   const handleFormSubmit = () => {
-   
+    // Validation checks
+    if (!email || !password) {
+      alert('Email and password are required fields.');
+      return;
+    }
+    if (password.length < 6) {
+      alert('Password should be at least six characters long.');
+      return;
+    }
+  
+    
+  
+    // Continue with the form submission logic
     navigate('/dashboard');
   };
+  
+// ...
+
 
   useEffect(() => {
    

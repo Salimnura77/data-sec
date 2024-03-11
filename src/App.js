@@ -1,22 +1,32 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
-import Register from "./pages/register/register"; // Ensure correct file name and path
-
+import Register from "./pages/register/register";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Bar from "./pages/dashboard/bar";
+import Table from "./pages/dashboard/table";
+import Management from "./pages/dashboard/management/Management";
+import Users from "./pages/dashboard/profile/Users";
+import Profile from "./pages/dashboard/profile/profile";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/sign-up" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard/>} />
-        {/* <Route path="/navbar" element={<Navbar />} /> */}
+        <Route path="/dashboard/*" element={<Dashboard />}>
+          <Route path="bar" element={<Bar />} />
+          <Route path="table" element={<Table />} />
+          <Route path="users" element={<Users />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="management" element={<Management />} />
+        </Route>
+        <Route path="*" element={<h1 className="text-primary text-center m-5 p-5">404</h1>} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
