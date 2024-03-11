@@ -15,9 +15,10 @@ class Sidebar extends Component {
       textDecoration: 'none',
     };
 
+    
     const activeLinkStyle = {
-      backgroundColor: '#007BFF', // Bootstrap blue
-      color: '#fff', // White color
+      backgroundColor: '#007BFF', 
+      color: '#fff !important', 
     };
 
     const hrStyle = {
@@ -37,8 +38,8 @@ class Sidebar extends Component {
 
         <NavItem>
           <NavLink
-            className="m-3 text-light border d-flex align-items-center noUnderline"
-            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/bar' ? activeLinkStyle : {}) }}
+            className="m-3 text-dark border d-flex align-items-center noUnderline"
+            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/bar' ? activeLinkStyle : {}), }}
             to="/dashboard/bar"
           >
             <MdOutlineDashboard className="m-2" />
@@ -47,8 +48,8 @@ class Sidebar extends Component {
         </NavItem>
         <NavItem>
           <NavLink
-            className="m-3 text-light border d-flex align-items-center noUnderline"
-            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/users' ? activeLinkStyle : {}) }}
+            className="m-3 text-dark border d-flex align-items-center noUnderline"
+            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/users' ? activeLinkStyle : {}), }}
             to="/dashboard/users"
           >
             <SiAsana className="m-2" />
@@ -57,8 +58,8 @@ class Sidebar extends Component {
         </NavItem>
         <NavItem>
           <NavLink
-            className="m-3 text-light border d-flex align-items-center noUnderline"
-            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/Management' ? activeLinkStyle : {}) }}
+            className="m-3 text-dark border d-flex align-items-center noUnderline"
+            style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/Management' ? activeLinkStyle : {}), }}
             to="/dashboard/Management"
           >
             <IoSettingsOutline className="m-2" />
@@ -67,7 +68,7 @@ class Sidebar extends Component {
         </NavItem>
         <NavItem>
           <NavLink
-            className="m-3 text-light border d-flex align-items-center noUnderline"
+            className="m-3 text-dark border d-flex align-items-center noUnderline"
             style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/profile' ? activeLinkStyle : {}) }}
             to="/dashboard/profile"
           >

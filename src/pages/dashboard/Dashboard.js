@@ -5,9 +5,9 @@ import DashboardLayout from '../dashboard/siadenav/sidenav';
 function getTitleFromPath(path) {
   const titleMappings = {
     '/dashboard/bar': 'Dashboard',
-    '/dashboard/table': 'Users Table',
-    '/dashboard/profile': 'Profile',
-    '/dashboard/management': 'Management',
+    '/dashboard/users': 'Users table',
+    '/dashboard/profile': ' User Profile',
+    '/dashboard/Management': ' User Management',
   };
 
   return titleMappings[path] || 'Dashboard';

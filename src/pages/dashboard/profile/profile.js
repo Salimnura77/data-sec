@@ -1,115 +1,146 @@
-// Profile.js
+// ProfilePage.js
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, FormGroup, Label, Input, Button, Card, CardImg, Alert } from 'reactstrap';
+import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import Image from "../../../asset/bash.png";
 
-const Profile = () => {
-  const [username, setUsername] = useState('YourUsername');
-  const [password, setPassword] = useState('YourPassword');
-  const [image, setImage] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+const ProfilePage = () => {
+  const initialProfileData = {
+    name: 'Bashir muhammad jibrin',
+    email: 'jibrinb2@gmail.com',
+    password: '123456',
+    bio: 'Hello! Im Bashir, a passionate professional based in Kano. Armed with a degree in chemistry, Ive honed my skills and expertise through experiences at Your PreviousCurrent Employers or Projects.',
+    image: Image,
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const [profileData, setProfileData] = useState({ ...initialProfileData });
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [newImage, setNewImage] = useState(null);
+
+  const toggleEditModal = () => {
+    setEditModalOpen(!editModalOpen);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData({
+      ...profileData,
+      [name]: value,
+    });
   };
 
   const handleImageChange = (e) => {
-    const selectedImage = e.target.files[0];
+    const file = e.target.files[0];
+    setNewImage(file);
+  };
 
-    if (selectedImage) {
-      setImage(selectedImage);
-      setPreviewImage(URL.createObjectURL(selectedImage));
+  const handleSave = () => {
+    if (newImage) {
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        setProfileData({
+          ...profileData,
+          image: reader.result,
+        });
+        toggleEditModal();
+      };
+  
+      reader.readAsDataURL(newImage);
+    } else {
+      toggleEditModal();
     }
   };
-
-  const handleSaveChanges = () => {
-    // Implement logic to save changes (e.g., send a request to the server)
-
-    // For demonstration purposes, we'll log the changes to the console
-    console.log('Username:', username);
-    console.log('Password:', password);
-    console.log('Image:', image);
-
-    // Show success message
-    setSuccessMessage('Changes saved successfully!');
-
-    // Clear the image and preview after saving changes
-    setImage(null);
-    setPreviewImage(null);
-
-    // Clear success message after a few seconds
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 3000);
-  };
-
   return (
-    <Container>
-      <Row className="justify-content-center mt-5">
-        <Col md={6}>
-          <h2 className="text-center mb-4">Edit Profile</h2>
-          <Form>
-            <FormGroup>
-              <Label for="username">Username:</Label>
-              <Input type="text" id="username" value={username} onChange={handleUsernameChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password:</Label>
-              <Input type="password" id="password" value={password} onChange={handlePasswordChange} />
-            </FormGroup>
-            <FormGroup>
-              <Label for="image">Profile Image:</Label>
-              <Input type="file" id="image" onChange={handleImageChange} />
-              {previewImage && (
-                <Card className="mt-2">
-                  <CardImg
-                    top
-                    width="100%"
-                    src={previewImage}
-                    alt="Profile Image"
-                    style={{ maxWidth: '200px', maxHeight: '200px', margin: 'auto', display: 'block' }}
-                  />
-                </Card>
-              )}
-            </FormGroup>
-            <div className="text-center">
-              <Button color="primary" onClick={handleSaveChanges}>
-                Save Changes
-              </Button>
-            </div>
-          </Form>
-          {successMessage && (
-            <Alert color="success" className="mt-3">
-              {successMessage}
-            </Alert>
-          )}
+    <Container fluid className="mt-5">
+      <Row>
+        <Col md={6} className="offset-md-3 text-center">
+          <img src={profileData.image} alt="Profile" className="rounded-circle mb-4 profile-image" />
+          <div>
+            <h2 className="mb-3">{profileData.name}</h2>
+            <p className="mb-2">Email: {profileData.email}</p>
+            <p className="mb-2">Password: {profileData.password}</p>
+            <p className="mb-4">Bio: {profileData.bio}</p>
+          </div>
+          <Button
+  color="primary"
+  onClick={toggleEditModal}
+  className="mt-3"
+  
+  style={{ width: '500px' }}  // Set the desired width here
+>
+  Edit
+</Button>
 
-          {/* Display current values after saving changes */}
-          {successMessage && (
-            <div className="mt-3">
-              <h4 className="text-center mb-2">Current Values</h4>
-              <p><strong>Username:</strong> {username}</p>
-              <p><strong>Password:</strong> {password}</p>
-              {previewImage && (
-                <Card style={{ maxWidth: '200px', maxHeight: '200px', margin: 'auto', display: 'block' }}>
-                  <CardImg
-                    top
-                    width="100%"
-                    src={previewImage}
-                    alt="Profile Image"
-                  />
-                </Card>
-              )}
-            </div>
-          )}
         </Col>
       </Row>
+
+      <Modal isOpen={editModalOpen} toggle={toggleEditModal} className="custom-modal">
+        <ModalHeader toggle={toggleEditModal} className="bg-primary text-white">Edit Profile</ModalHeader>
+        <ModalBody>
+          <Form>
+            <FormGroup>
+              <Label for="name">Name</Label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
+                value={profileData.name}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="email">Email</Label>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                value={profileData.email}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="password">Password</Label>
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                value={profileData.password}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="bio">Bio</Label>
+              <Input
+                type="textarea"
+                name="bio"
+                id="bio"
+                value={profileData.bio}
+                onChange={handleInputChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="image">Profile Image</Label>
+              <Input
+                type="file"
+                name="image"
+                id="image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </FormGroup>
+          </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleSave}>
+            Save
+          </Button>{' '}
+          <Button color="secondary" onClick={toggleEditModal}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
     </Container>
   );
 };
 
-export default Profile;
+export default ProfilePage;

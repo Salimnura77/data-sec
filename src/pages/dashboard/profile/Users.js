@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
-
+import Image from "../../../asset/bash.png";
 const UserProfile = () => {
   const [users, setUsers] = useState([
-    { id: 1, name: 'bashir jibrin', email: 'jibrinb2@.com', avatar: '' },
-    { id: 2, name: 'nazif abdul', email: 'nazifexample.com', avatar: '' },
+    { id: 1, name: 'bashir jibrin', email: 'jibrinb2@.com', avatar: Image },
+    { id: 2, name: 'nazif abdul', email: 'nazifexample.com', avatar: Image },
   ]);
 
   const [modal, setModal] = useState(false);
