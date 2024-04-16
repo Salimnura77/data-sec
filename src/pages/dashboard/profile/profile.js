@@ -1,6 +1,5 @@
-// ProfilePage.js
 import React, { useState } from 'react';
-import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Card, CardImg, CardBody } from 'reactstrap';
 import Image from "../../../asset/bash.png";
 
 const ProfilePage = () => {
@@ -8,7 +7,7 @@ const ProfilePage = () => {
     name: 'Bashir muhammad jibrin',
     email: 'jibrinb2@gmail.com',
     password: '123456',
-    bio: 'Hello! Im Bashir, a passionate professional based in Kano. Armed with a degree in chemistry, Ive honed my skills and expertise through experiences at Your PreviousCurrent Employers or Projects.',
+    bio: 'Hello! I\'m Bashir, a passionate professional based in Kano. Armed with a degree in chemistry, I\'ve honed my skills and expertise through experiences at Your PreviousCurrent Employers or Projects.',
     image: Image,
   };
 
@@ -50,27 +49,31 @@ const ProfilePage = () => {
       toggleEditModal();
     }
   };
+
+  const resetProfile = () => {
+    setProfileData({ ...initialProfileData });
+  };
+
   return (
     <Container fluid className="mt-5">
       <Row>
-        <Col md={6} className="offset-md-3 text-center">
-          <img src={profileData.image} alt="Profile" className="rounded-circle mb-4 profile-image" />
-          <div>
-            <h2 className="mb-3">{profileData.name}</h2>
-            <p className="mb-2">Email: {profileData.email}</p>
-            <p className="mb-2">Password: {profileData.password}</p>
-            <p className="mb-4">Bio: {profileData.bio}</p>
-          </div>
-          <Button
-  color="primary"
-  onClick={toggleEditModal}
-  className="mt-3"
-  
-  style={{ width: '500px' }}  // Set the desired width here
->
-  Edit
-</Button>
-
+        <Col md={6} className="offset-md-3">
+          <Card>
+            <CardBody>
+              <Row className="mb-3">
+                <Col md={4} className="text-center">
+                  <CardImg src={profileData.image} alt="Profile" className="rounded-circle profile-image" />
+                  <Button color="primary" onClick={toggleEditModal} className="mt-3" block>Edit Profile</Button>
+                </Col>
+                <Col md={8}>
+                  <h2>{profileData.name}</h2>
+                  <p>Email: {profileData.email}</p>
+                  <p>Password: {profileData.password}</p>
+                  <p>Bio: {profileData.bio}</p>
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
         </Col>
       </Row>
 
@@ -96,6 +99,8 @@ const ProfilePage = () => {
                 id="email"
                 value={profileData.email}
                 onChange={handleInputChange}
+                // Add required attribute for validation
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -131,12 +136,8 @@ const ProfilePage = () => {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleSave}>
-            Save
-          </Button>{' '}
-          <Button color="secondary" onClick={toggleEditModal}>
-            Cancel
-          </Button>
+          <Button color="primary" onClick={handleSave}>Save</Button>{' '}
+          <Button color="secondary" onClick={toggleEditModal}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </Container>

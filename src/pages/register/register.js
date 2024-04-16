@@ -3,6 +3,7 @@ import { Button, Form, FormGroup, Label, InputGroup, Input, InputGroupText, Cont
 import { FaRegEye, FaEyeSlash } from 'react-icons/fa';
 import { SiDataverse } from 'react-icons/si';
 import { Oval as Loader } from 'react-loader-spinner';
+import axios from 'axios';
 import "./register.css";
 
 export default function Register() {
@@ -13,7 +14,7 @@ export default function Register() {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    // confirmPassword: '',
   });
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
@@ -22,7 +23,6 @@ export default function Register() {
   };
 
   useEffect(() => {
-    
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -41,24 +41,32 @@ export default function Register() {
   const handleRegister = () => {
     // Validation checks
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || !formData.confirmPassword) {
-    alert('All fields are required.');
+      alert('All fields are required.');
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
-    alert('Passwords do not match.');
+      alert('Passwords do not match.');
       return;
     }
 
     if (formData.password.length < 6) {
-    alert('Password should be at least six characters long.');
+      alert('Password should be at least six characters long.');
       return;
     }
 
-   
-    setRegistrationSuccess(true);
+    axios.post('http://localhost:3001/api/register', formData)
+      .then(response => {
+        // Handle successful registration
+        console.log(response.data); // Log the response from the server
+        setRegistrationSuccess(true); // Set registration success state to true
+      })
+      .catch(error => {
+        // Handle registration error
+        console.error('Error registering user:', error);
+        alert('An error occurred while registering. Please try again later.');
+      });
   };
-
 
   return (
     <div className='register'>

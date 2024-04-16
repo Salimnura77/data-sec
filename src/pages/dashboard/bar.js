@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import Table from './table.js';
+import CustomCard from "./CustomCard.js"
 
 const SecurityChart = () => {
   const barChartRef = useRef(null);
@@ -64,7 +65,7 @@ const SecurityChart = () => {
       datasets: [
         {
           data: [30, 50, 20],
-          backgroundColor: ['red', 'blue', 'yellow'],
+          backgroundColor: ['red', '#007BFF', 'yellow'],
           hoverBackgroundColor: ['rgba(255,0,0,0.5)', 'rgba(0,0,255,0.5)', 'rgba(255,255,0,0.5)'],
         },
       ],
@@ -102,10 +103,13 @@ const SecurityChart = () => {
       datasets: [
         {
           label: 'Monthly Data',
-          borderColor: 'rgba(255, 99, 132, 1)',
+          borderColor: '',
           borderWidth: 2,
           fill: false,
           data: [65, 59, 80, 81, 56],
+
+
+
         },
       ],
     };
@@ -191,6 +195,8 @@ const SecurityChart = () => {
   }, []);
 
   return (
+    <>
+    <CustomCard/>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
       <div style={{ boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
         <canvas id="barChart" width="400" height="400"></canvas>
@@ -204,7 +210,9 @@ const SecurityChart = () => {
       <div style={{ boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
         <canvas id="radarChart" width="400" height="400"></canvas>
       </div>
+
     </div>
+    </>
   );
 };
 

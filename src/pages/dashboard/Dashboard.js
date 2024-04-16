@@ -23,11 +23,11 @@ function Dashboard() {
     setPageTitle(currentTitle);
   }, [location]);
 
-  // Use useEffect with an empty dependency array to run once when the component mounts
+  
   useEffect(() => {
-    // Set the default route to '/dashboard/bar' when entering the dashboard
+    
     navigate('/dashboard/bar');
-  }, []); // Empty dependency array
+  }, []); 
 
   return (
     <DashboardLayout>
@@ -38,7 +38,7 @@ function Dashboard() {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title text-white bg-primary text-center border p-3">
+                    <h5 className="card-title text-white bg-primary text-center border p-3 sticky-top">
                       {pageTitle}
                     </h5>
                     <Outlet />

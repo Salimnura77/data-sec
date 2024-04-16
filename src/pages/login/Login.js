@@ -17,9 +17,7 @@ export default function LoginFinal() {
     setPasswordVisible(!passwordVisible);
   };
 
-  // ...
-
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     // Validation checks
     if (!email || !password) {
       alert('Email and password are required fields.');
@@ -29,18 +27,32 @@ export default function LoginFinal() {
       alert('Password should be at least six characters long.');
       return;
     }
-  
     
-  
-    // Continue with the form submission logic
-    navigate('/dashboard');
+    try {
+      // Send login request to API
+      const response = await fetch('http://localhost:3001/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      if (response.ok) {
+        // Login successful, navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        // Login failed, display error message
+        const data = await response.json();
+        alert(data.message); // Display error message from API
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('An error occurred while logging in. Please try again later.');
+    }
   };
   
-// ...
-
-
   useEffect(() => {
-   
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
