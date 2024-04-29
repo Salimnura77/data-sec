@@ -1,62 +1,87 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
-import Image from "../../../asset/bash.png";
-const UserProfile = () => {
-  const [users, setUsers] = useState([
-    { id: 1, name: 'bashir jibrin', email: 'jibrinb2@.com', avatar: Image },
-    { id: 2, name: 'nazif abdul', email: 'nazifexample.com', avatar: Image },
-  ]);
 
+const UserProfile = () => {
+  const [users, setUsers] = useState([]);
+  const [editingUser, setEditingUser] = useState(null);
   const [modal, setModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState({ id: null, name: '', email: '', avatar: '' });
-  const [idCounter, setIdCounter] = useState(users.length + 1); // Initialize counter
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+console.log(formData)
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/api/users');
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const toggleModal = () => {
     setModal(!modal);
   };
 
-  const handleEdit = (user) => {
-    setSelectedUser(user);
-    toggleModal();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleDelete = (userId) => {
-    const updatedUsers = users.filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
-  };
-
-  const handleSave = () => {
-    // Update or add the user based on whether it's an edit or add action
-    if (selectedUser.id) {
-      const updatedUsers = users.map((user) => (user.id === selectedUser.id ? selectedUser : user));
-      setUsers(updatedUsers);
-    } else {
-      setUsers([...users, { ...selectedUser, id: idCounter }]);
-      setIdCounter(idCounter + 1); // Increment counter for the next user
-    }
-
-    toggleModal();
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedUser((prevUser) => ({ ...prevUser, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const avatarUrl = event.target.result;
-        setSelectedUser((prevUser) => ({ ...prevUser, avatar: avatarUrl }));
-      };
-
-      reader.readAsDataURL(file);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3001/api/users`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update user');
+      }
+      fetchUserData(); // Fetch updated user data after edit
+      toggleModal();
+    } catch (error) {
+      console.error(error);
     }
   };
+
+  const deleteUser = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete user');
+      }
+      fetchUserData(); // Fetch updated user data after delete
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+  const editUser = (user) => {
+    setEditingUser(user);
+    setFormData({
+      id: user._id, // Use user._id to get the ID of the user being edited
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email
+    });
+    toggleModal();
+  };
+  
 
   return (
     <div>
@@ -65,63 +90,47 @@ const UserProfile = () => {
           <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Last Name</th>
             <th>Email</th>
-            <th>Image</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.name}</td>
+          {users.map((user,index) => (
+            <tr key={user._id}>
+               <td>{index + 1}</td>
+
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
               <td>{user.email}</td>
               <td>
-                {user.avatar && <img src={user.avatar} alt="Avatar" style={{ width: '50px', height: '50px', borderRadius: '50%' }} />}
-              </td>
-              <td>
-                <Button color="primary" onClick={() => handleEdit(user)}>
-                  Edit
-                </Button>{' '}
-                <Button color="danger" onClick={() => handleDelete(user.id)}>
-                  Delete
-                </Button>
+                <Button className='m-1' color="danger" onClick={() => deleteUser(user._id)}>Delete</Button>
+                <Button className='m-1' color="success" onClick={() => editUser(user)}>Edit</Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
-
-      <Button color="primary" onClick={() => { setSelectedUser({ id: null, name: '', email: '', avatar: '' }); toggleModal(); }}>
-        Add User
-      </Button>
-
       <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>{selectedUser.id ? 'Edit User' : 'Add User'}</ModalHeader>
+        <ModalHeader toggle={toggleModal}>Edit User</ModalHeader>
         <ModalBody>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <FormGroup>
-              <Label for="name">Name</Label>
-              <Input type="text" name="name" id="name" value={selectedUser.name} onChange={handleInputChange} />
+              <Label for="firstName">First Name</Label>
+              <Input type="text" name="firstName" id="firstName" value={formData.firstName} onChange={handleChange} />
+            </FormGroup>
+            <FormGroup>
+              <Label for="lastName">Last Name</Label>
+              <Input type="text" name="lastName" id="lastName" value={formData.lastName} onChange={handleChange} />
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="email" name="email" id="email" value={selectedUser.email} onChange={handleInputChange} />
+              <Input type="email" name="email" id="email" value={formData.email} onChange={handleChange} />
             </FormGroup>
-            <FormGroup>
-              <Label for="avatar">Avatar</Label>
-              <Input type="file" name="avatar" id="avatar" onChange={handleFileChange} />
-            </FormGroup>
+            <Button type="submit" color="primary">Save</Button>{' '}
+            <Button color="secondary" onClick={toggleModal}>Cancel</Button>
           </Form>
         </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={handleSave}>
-            Save
-          </Button>{' '}
-          <Button color="danger" onClick={toggleModal}>
-            Cancel
-          </Button>
-        </ModalFooter>
       </Modal>
     </div>
   );
