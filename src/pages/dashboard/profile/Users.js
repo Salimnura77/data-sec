@@ -58,7 +58,7 @@ console.log(formData)
 
   const deleteUser = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+      const response = await fetch(`http://localhost:3001/api/${userId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
