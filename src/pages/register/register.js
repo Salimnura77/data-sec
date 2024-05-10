@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, FormGroup, Label, InputGroup, Input, InputGroupText, Container, Card, CardBody, CardTitle, CardText, NavLink, Col, Row } from 'reactstrap';
+import { Button, Form, FormGroup, Label, InputGroup, Input, InputGroupText,Spinner, Container, Card, CardBody, CardTitle, CardText, NavLink, Col, Row } from 'reactstrap';
 import { FaRegEye, FaEyeSlash } from 'react-icons/fa';
-import { SiDataverse } from 'react-icons/si';
+import { CiDeliveryTruck } from "react-icons/ci";
 import { Oval as Loader } from 'react-loader-spinner';
 import axios from 'axios';
 import "./register.css";
@@ -55,7 +55,7 @@ export default function Register() {
       return;
     }
 
-    axios.post('http://localhost:3001/api/register', formData)
+    axios.post('http://localhost:3002/api/register', formData)
       .then(response => {
         // Handle successful registration
         console.log(response.data); // Log the response from the server
@@ -71,18 +71,22 @@ export default function Register() {
   return (
     <div className='register'>
       {isLoading ? (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-          <Loader type="Oval" color="#007BFF" height={50} width={50} />
-        </div>
+      <div className="spinner-container">
+      <Spinner />
+    </div>
+    
+     
+      
+
       ) : (
         <Container>
           <Row>
             <Col md={3}></Col>
             <Col className="m-3" md={6}>
-              <Card className='m-3 bg-light' style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+              <Card className='m-3 ' style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
                 <CardBody>
                   <CardTitle tag="h4" className='text-center'>
-                    <div className='m-3 '> <SiDataverse style={{ fontSize: '50px', color: ' #007BFF' }} /> </div>
+                    <div className='m-3 '> <CiDeliveryTruck style={{ fontSize: '50px', color: ' #000' }} /> </div>
                     <b>Register</b>
                   </CardTitle>
                   {registrationSuccess ? (
@@ -161,7 +165,7 @@ export default function Register() {
                           </InputGroup>
                         </FormGroup>
                         <div className='d-grid align-items-center'>
-                          <Button color="primary" style={{ marginTop: '1rem' }} onClick={handleRegister}>
+                          <Button color="dark" style={{ marginTop: '1rem' }} onClick={handleRegister}>
                             Register
                           </Button>
                           <p style={{ textAlign: 'center', marginTop: '1rem' }}>

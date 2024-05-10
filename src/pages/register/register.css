@@ -1,7 +1,19 @@
 
    .register{
-    background: url(../../asset/bg.jpg);
-    background-position: center;
-    background-size: cover;
+      background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background color */
+      backdrop-filter: blur(8px); /* Apply blur effect */
+      height: 120vh;
 
    }
+
+   .spinner-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh; /* Make the container take up the full height of the viewport */
+    }
+    
+    .spinner-text {
+      text-align: center;
+    }
+    

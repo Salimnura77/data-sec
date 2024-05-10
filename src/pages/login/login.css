@@ -1,8 +1,51 @@
-.login{
-    background: url(../../asset/bg2.jpg);
-    background-position: center;
-    background-size: cover;
+.login {
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black background color */
+    backdrop-filter: blur(8px); /* Apply blur effect */
     height: 100vh;
-
-   
-}
+  }
+  
+  .card {
+    background-color: #ffffff; /* Background color for the card */
+  }
+  
+  .card-title {
+    color: #000000; /* Color for the card title */
+  }
+  
+  .form-control {
+    background-color: #ffffff; /* Background color for form inputs */
+    border-color: #000000; /* Border color for form inputs */
+  }
+  
+  .form-control:focus {
+    background-color: #ffffff; /* Background color for focused form inputs */
+  }
+  
+  .btn-primary {
+    background-color: #000000; /* Background color for primary buttons */
+    border-color: #000000; /* Border color for primary buttons */
+  }
+  
+  .btn-primary:hover {
+    background-color: #333333; /* Background color for primary buttons on hover */
+    border-color: #333333; /* Border color for primary buttons on hover */
+  }
+  
+  .nav-link {
+    color: #000000; /* Color for navigation links */
+  }
+  
+  .nav-link:hover {
+    color: #333333; /* Color for navigation links on hover */
+  }
+  
+  .spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Make the container take up the full height of the viewport */
+  }
+  
+  .spinner-text {
+    text-align: center;
+  }

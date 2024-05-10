@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, NavItem, Nav } from 'reactstrap';
-import { MdOutlineDashboard } from 'react-icons/md';
-import { SiAsana } from 'react-icons/si';
+import { RxDashboard } from "react-icons/rx";
+import { PiUsers } from "react-icons/pi";
+import { CiDeliveryTruck } from "react-icons/ci";
 import { CgProfile } from 'react-icons/cg';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { SiDataverse } from 'react-icons/si';
 import { NavLink } from 'react-router-dom';
 
+
 class Sidebar extends Component {
   render() {
     const borderStyle = {
       borderRadius: '10px',
-      padding: '15px ',
+      padding: '10px ',
       textDecoration: 'none',
+      
     };
 
     
     const activeLinkStyle = {
-      color: '#fff ', 
-      backgroundColor: '#007BFF', 
+      color: ' #fff', 
+      backgroundColor:"#000"
+      
      
     };
 
@@ -34,44 +38,44 @@ class Sidebar extends Component {
       <div style={{ position: 'sticky', top: '0', zIndex: '100', backgroundColor: '#fff', paddingTop: '0px' }}>
         <Nav vertical className="bg-light" style={{ height: '100vh', maxWidth: '300px' }}>
           <div className="p-3  d-grid justify-content-center ">
-            <SiDataverse style={{ fontSize: '80px', color: ' #007BFF' }} />
+            <CiDeliveryTruck style={{ fontSize: '80px', color: ' #000' }} />
           </div>
           <hr style={hrStyle} />
 
           <NavItem>
             <NavLink
-              className="m-3 text-dark border d-flex align-items-center noUnderline"
+              className="m-3  border d-flex align-items-center noUnderline color"
               style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/bar' ? activeLinkStyle : {}), }}
               to="/dashboard/bar"
             >
               
-              <MdOutlineDashboard className="m-2" />
+              <RxDashboard  className="m-2" />
               Dashboard
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className="m-3 text-dark border d-flex align-items-center noUnderline"
+              className="m-3  border d-flex align-items-center noUnderline color"
               style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/users' ? activeLinkStyle : {}), }}
               to="/dashboard/users"
             >
-              <SiAsana className="m-2" />
+              <PiUsers className="m-2" />
               Users
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className="m-3 text-dark border d-flex align-items-center noUnderline"
-              style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/Management' ? activeLinkStyle : {}), }}
-              to="/dashboard/Management"
+              className="m-3  border d-flex align-items-center noUnderline color"
+              style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/booking' ? activeLinkStyle : {}), }}
+              to="/dashboard/booking"
             >
               <IoSettingsOutline className="m-2" />
-              Management
+             Booking
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className="m-3 text-dark border d-flex align-items-center noUnderline"
+              className="m-3 text-dark border d-flex align-items-center noUnderline color"
               style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/profile' ? activeLinkStyle : {}) }}
               to="/dashboard/profile"
             >
@@ -83,7 +87,7 @@ class Sidebar extends Component {
           <div className="mt-auto p-3">
             <NavItem>
               <NavLink to="/login">
-                <button className="btn btn-primary">Logout</button>
+                <button className="btn btn-dark">Logout</button>
               </NavLink>
             </NavItem>
           </div>

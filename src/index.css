@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.color{
+  color: #000;
+}
+
+
+
+.icon-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+
+.icon {
+  transition: all 0.3s ease;
+}
+
+.icon:hover {
+  opacity: 0.9; /* Reduce opacity on hover */
+  transform: translate(0, -10px); /* Move icon upwards on hover */
+}

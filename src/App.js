@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Bar from "./pages/dashboard/bar";
 import Table from "./pages/dashboard/table";
-import Management from "./pages/dashboard/management/Management";
+import Booking from "./pages/dashboard/booking/booking";
 import Users from "./pages/dashboard/profile/Users";
 import Profile from "./pages/dashboard/profile/profile";
 
@@ -22,7 +22,7 @@ function App() {
           <Route path="table" element={<Table />} />
           <Route path="users" element={<Users />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="management" element={<Management />} />
+          <Route path="booking" element={<Booking />} />
         </Route>
         <Route path="*" element={<h1 className="text-primary text-center m-5 p-5">404</h1>} />
       </Routes>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 
 const UserProfile = () => {
   const [users, setUsers] = useState([]);
@@ -10,14 +10,17 @@ const UserProfile = () => {
     lastName: '',
     email: ''
   });
-console.log(formData)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     fetchUserData();
   }, []);
 
   const fetchUserData = async () => {
+    setLoading(true);
     try {
-      const response = await fetch('http://localhost:3001/api/users');
+      const response = await fetch('http://localhost:3002/api/users');
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -25,6 +28,9 @@ console.log(formData)
       setUsers(data);
     } catch (error) {
       console.error(error);
+      setError('Failed to fetch user data');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,8 +44,9 @@ console.log(formData)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/users`, {
+      const response = await fetch(`http://localhost:3002/api/users`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -53,12 +60,16 @@ console.log(formData)
       toggleModal();
     } catch (error) {
       console.error(error);
+      setError('Failed to update user');
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteUser = async (userId) => {
+    setLoading(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/${userId}`, {
+      const response = await fetch(`http://localhost:3002/api/${userId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -67,6 +78,9 @@ console.log(formData)
       fetchUserData(); // Fetch updated user data after delete
     } catch (error) {
       console.error(error);
+      setError('Failed to delete user');
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -85,6 +99,8 @@ console.log(formData)
 
   return (
     <div>
+      {loading && <p>Loading...</p>}
+      {error && <Alert color="danger">{error}</Alert>}
       <Table>
         <thead>
           <tr>
@@ -104,8 +120,8 @@ console.log(formData)
               <td>{user.lastName}</td>
               <td>{user.email}</td>
               <td>
-                <Button className='m-1' color="danger" onClick={() => deleteUser(user._id)}>Delete</Button>
-                <Button className='m-1' color="success" onClick={() => editUser(user)}>Edit</Button>
+                <Button className='m-1' color="dark" onClick={() => deleteUser(user._id)}>Delete</Button>
+                <Button className='m-1' color="light" onClick={() => editUser(user)}>Edit</Button>
               </td>
             </tr>
           ))}
@@ -117,18 +133,18 @@ console.log(formData)
           <Form onSubmit={handleSubmit}>
             <FormGroup>
               <Label for="firstName">First Name</Label>
-              <Input type="text" name="firstName" id="firstName" value={formData.firstName} onChange={handleChange} />
+              <Input type="text" name="firstName" id="firstName" value={formData.firstName} onChange={handleChange} required />
             </FormGroup>
             <FormGroup>
               <Label for="lastName">Last Name</Label>
-              <Input type="text" name="lastName" id="lastName" value={formData.lastName} onChange={handleChange} />
+              <Input type="text" name="lastName" id="lastName" value={formData.lastName} onChange={handleChange} required />
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
-              <Input type="email" name="email" id="email" value={formData.email} onChange={handleChange} />
+              <Input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required />
             </FormGroup>
-            <Button type="submit" color="primary">Save</Button>{' '}
-            <Button color="secondary" onClick={toggleModal}>Cancel</Button>
+            <Button type="submit" color="dark" disabled={loading}>Save</Button>{' '}
+            <Button color="light" onClick={toggleModal} disabled={loading}>Cancel</Button>
           </Form>
         </ModalBody>
       </Modal>

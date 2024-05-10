@@ -7,7 +7,7 @@ function getTitleFromPath(path) {
     '/dashboard/bar': 'Dashboard',
     '/dashboard/users': 'Users table',
     '/dashboard/profile': ' User Profile',
-    '/dashboard/Management': ' User Management',
+    '/dashboard/booking': ' Bookings',
   };
 
   return titleMappings[path] || 'Dashboard';
@@ -29,6 +29,15 @@ function Dashboard() {
     navigate('/dashboard/bar');
   }, []); 
 
+ 
+  const borderStyle = {
+    borderRadius: '20px',
+    padding: '10px ',
+    textDecoration: 'none',
+    
+  };
+
+
   return (
     <DashboardLayout>
       <div className="dashboard">
@@ -38,9 +47,11 @@ function Dashboard() {
               <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <h5 className="card-title text-white bg-primary text-center border p-3 sticky-top">
+                    <h5 className="card-title text-dark text-center  bg-light  p-3 sticky-top" style={borderStyle}>
                       {pageTitle}
+                      
                     </h5>
+                   
                     <Outlet />
                   </div>
                 </div>
