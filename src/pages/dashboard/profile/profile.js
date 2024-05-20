@@ -1,20 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Avatar from 'react-avatar';
+
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, Card, CardImg, CardBody } from 'reactstrap';
-import Image from "../../../asset/bash.png";
 
 const ProfilePage = () => {
-  const initialProfileData = {
-    name: 'Bashir muhammad jibrin',
-    email: 'jibrinb2@gmail.com',
-    password: '123456',
-    bio: 'Hello! I\'m Bashir, a passionate professional based in Kano. Armed with a degree in chemistry, I\'ve honed my skills and expertise through experiences at Your PreviousCurrent Employers or Projects.',
-    image: Image,
-  };
-
-  const [profileData, setProfileData] = useState({ ...initialProfileData });
+  const [profileData, setProfileData] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [newImage, setNewImage] = useState(null);
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      // If token doesn't exist, navigate the user to the login page
+      navigate('/login');
+      return;
+    }
+  
+    axios.get('http://localhost:3002/api/Profile', { headers: { Authorization: `Bearer ${token}` } })
+      .then(response => {
+        setProfileData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching profile data', error);
+      });
+  }, [navigate]);
+  
   const toggleEditModal = () => {
     setEditModalOpen(!editModalOpen);
   };
@@ -27,6 +41,17 @@ const ProfilePage = () => {
     });
   };
 
+  const handleProfileUpdate = () => {
+    axios.put('http://localhost:3002/api/Profile', profileData, { headers: { Authorization: `Bearer ${token}` } })
+      .then(response => {
+        setProfileData(response.data);
+        setEditModalOpen(false);
+      })
+      .catch(error => {
+        console.error('Error updating profile data', error);
+      });
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setNewImage(file);
@@ -34,112 +59,85 @@ const ProfilePage = () => {
 
   const handleSave = () => {
     if (newImage) {
-      const reader = new FileReader();
-  
-      reader.onloadend = () => {
-        setProfileData({
-          ...profileData,
-          image: reader.result,
+      const formData = new FormData();
+      formData.append('image', newImage);
+      axios.post('/api/upload', formData, { headers: { Authorization: `Bearer ${token}` } })
+        .then(response => {
+          setProfileData({
+            ...profileData,
+            image: response.data.imageUrl,
+          });
+          setEditModalOpen(false);
+        })
+        .catch(error => {
+          console.error('Error uploading image', error);
         });
-        toggleEditModal();
-      };
-  
-      reader.readAsDataURL(newImage);
     } else {
-      toggleEditModal();
+      handleProfileUpdate();
     }
-  };
-
-  const resetProfile = () => {
-    setProfileData({ ...initialProfileData });
   };
 
   return (
     <Container fluid className="mt-5">
-      <Row>
-        <Col md={6} className="offset-md-3">
-          <Card>
-            <CardBody>
-              <Row className="mb-3">
-                <Col md={4} className="text-center">
-                  <CardImg src={profileData.image} alt="Profile" className="rounded-circle profile-image" />
-                  <Button color="primary" onClick={toggleEditModal} className="mt-3" block>Edit Profile</Button>
-                </Col>
-                <Col md={8}>
-                  <h2>{profileData.name}</h2>
-                  <p>Email: {profileData.email}</p>
-                  <p>Password: {profileData.password}</p>
-                  <p>Bio: {profileData.bio}</p>
-                </Col>
-              </Row>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+      {profileData ? (
+        <>
+         <Row>
+    <Col md={6} className="offset-md-3">
+      <Card>
+        <CardBody>
+          <Row className="mb-3 align-items-center">
+            <Col md={4} className="text-center">
+            <Avatar name={`${profileData.firstName} ${profileData.lastName}`} round size="150" />
 
-      <Modal isOpen={editModalOpen} toggle={toggleEditModal} className="custom-modal">
-        <ModalHeader toggle={toggleEditModal} className="bg-primary text-white">Edit Profile</ModalHeader>
-        <ModalBody>
-          <Form>
-            <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                value={profileData.name}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="email">Email</Label>
-              <Input
-                type="email"
-                name="email"
-                id="email"
-                value={profileData.email}
-                onChange={handleInputChange}
-                // Add required attribute for validation
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                value={profileData.password}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="bio">Bio</Label>
-              <Input
-                type="textarea"
-                name="bio"
-                id="bio"
-                value={profileData.bio}
-                onChange={handleInputChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="image">Profile Image</Label>
-              <Input
-                type="file"
-                name="image"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={handleSave}>Save</Button>{' '}
-          <Button color="secondary" onClick={toggleEditModal}>Cancel</Button>
-        </ModalFooter>
-      </Modal>
+              <Button color="dark" onClick={toggleEditModal} className="mt-3 mx-auto d-block" block>Edit Profile</Button>
+            </Col>
+            <Col md={8}>
+              <h2>{profileData.firstName} {profileData.lastName}</h2>
+              <p>Email: {profileData.email}</p>
+            </Col>
+          </Row>
+        </CardBody>
+      </Card>
+    </Col>
+  </Row>
+
+          <Modal isOpen={editModalOpen} toggle={toggleEditModal} className="custom-modal">
+            <ModalHeader toggle={toggleEditModal} className="bg-dark text-white">Edit Profile</ModalHeader>
+            <ModalBody>
+              <Form>
+                <FormGroup>
+                  <Label for="name">Name</Label>
+                  <Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={profileData.firstName}
+                    onChange={handleInputChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={profileData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </FormGroup>
+                
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="dark" onClick={handleSave}>Save</Button>{' '}
+              <Button color="light" onClick={toggleEditModal}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </Container>
   );
 };

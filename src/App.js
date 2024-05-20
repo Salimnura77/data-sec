@@ -10,10 +10,12 @@ import Booking from "./pages/dashboard/booking/booking";
 import Users from "./pages/dashboard/profile/Users";
 import Profile from "./pages/dashboard/profile/profile";
 
+
 function App() {
   return (
     <Router>
       <Routes>
+      
         <Route path="/" element={<Login />} />
         <Route path="/sign-up" element={<Register />} />
         <Route path="/login" element={<Login />} />

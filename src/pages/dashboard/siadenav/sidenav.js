@@ -75,7 +75,7 @@ class Sidebar extends Component {
           </NavItem>
           <NavItem>
             <NavLink
-              className="m-3 text-dark border d-flex align-items-center noUnderline color"
+              className="m-3  border d-flex align-items-center noUnderline color"
               style={{ ...borderStyle, ...(window.location.pathname === '/dashboard/profile' ? activeLinkStyle : {}) }}
               to="/dashboard/profile"
             >

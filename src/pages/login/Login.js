@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, FormGroup, Label, InputGroup, Input,Spinner, InputGroupText, Container, Card, CardBody, CardTitle, CardText, NavLink, Col, Row } from 'reactstrap';
+import { Button, Form, FormGroup, Label, InputGroup, Input, Spinner, InputGroupText, Container, Card, CardBody, CardTitle, CardText, NavLink, Col, Row } from 'reactstrap';
 import { FaRegEye, FaEyeSlash } from 'react-icons/fa';
 import { CiDeliveryTruck } from "react-icons/ci";
-import { useHistory } from 'react-router-dom';
-
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
-export default function LoginFinal() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -42,7 +39,15 @@ export default function LoginFinal() {
       });
 
       if (response.ok) {
-        // Login successful, navigate to dashboard
+        // Login successful, extract token from response
+        const data = await response.json();
+        const token = data.token;
+
+        // Store token in local storage
+        localStorage.setItem('authToken', token);
+        console.log('Auth Token:', token);
+
+        // Navigate to dashboard
         navigate('/dashboard');
       } else {
         // Login failed, display error message
@@ -54,12 +59,14 @@ export default function LoginFinal() {
       alert('An error occurred while logging in. Please try again later.');
     }
   };
-  useEffect(() => {
-    const authToken = localStorage.getItem('authToken');
-    if (authToken) {
-      navigate('/dashboard');
-    }
-  }, []);
+
+  // useEffect(() => {
+  //   const authToken = localStorage.getItem('authToken');
+  //   if (authToken) {
+  //     navigate('/dashboard');
+  //   }
+  // }, [navigate]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -73,7 +80,7 @@ export default function LoginFinal() {
       <Container>
         {isLoading ? (
           <div className="spinner-container">
-          <Spinner />
+            <Spinner />
           </div>
         ) : (
           <Row>
@@ -117,15 +124,14 @@ export default function LoginFinal() {
                       </InputGroup>
                     </FormGroup>
                     <div className='d-grid align-items-center'>
-                    <Button color='dark' style={{ marginTop: '1rem' }} type='submit' disabled={isLoading}>
-  {isLoading ? <Spinner size="sm" color="light" /> : 'Log in'}
-</Button>
-
+                      <Button color='dark' style={{ marginTop: '1rem' }} type='submit' disabled={isLoading}>
+                        {isLoading ? <Spinner size="sm" color="light" /> : 'Log in'}
+                      </Button>
                       <p style={{ textAlign: 'center', marginTop: '1rem' }}>
-                        Don't have an account?     <NavLink href='/sign-up' style={{ textDecoration: 'underline' }}>
-      Sign up
-    </NavLink>
-
+                        Don't have an account?{' '}
+                        <NavLink href='/sign-up' style={{ textDecoration: 'underline' }}>
+                          Sign up
+                        </NavLink>
                       </p>
                     </div>
                   </Form>

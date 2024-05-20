@@ -74,10 +74,20 @@ const AddBookingForm = ({ onAddBooking }) => {
           onChange={handleChange}
           required
         >
-          <option value="">Select Truck Type</option>
-          <option value="container">container</option>
-          <option value="Medium">Medium</option>
-          <option value="Large">Large</option>
+      
+  <option value="">Select Truck Type</option>
+  <option value="pickup">Pickup Truck</option>
+  <option value="semi-trailer">Semi-Trailer Truck</option>
+  <option value="box">Box Truck</option>
+  <option value="dump">Dump Truck</option>
+  <option value="flatbed">Flatbed Truck</option>
+  <option value="reefer">Refrigerated Truck (Reefer)</option>
+  <option value="tow">Tow Truck</option>
+  <option value="tanker">Tanker Truck</option>
+  <option value="cement-mixer">Cement Mixer Truck</option>
+  <option value="fire">Fire Truck</option>
+
+
         </Input>
       </FormGroup>
       <FormGroup>

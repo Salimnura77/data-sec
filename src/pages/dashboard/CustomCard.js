@@ -11,7 +11,7 @@ const QuickActivityWrap = ({ data }) => {
         <CardBody>
           <CardTitle className="text-dark">Welcome, admin</CardTitle>
           <h3>
-            <span className="text-dark">80%</span>
+            <span className="text-dark"></span>
           </h3>
           <div className="icon-container">
             {/* <FaUser color="#000" size={50} style={{ opacity: 0.5 }} />
